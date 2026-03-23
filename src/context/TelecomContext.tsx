@@ -58,7 +58,18 @@ export function TelecomProvider({ children }: { children: React.ReactNode }) {
   });
 
   const setActiveNetwork = (n: NetworkType | null) =>
-    setState((s) => ({ ...s, activeNetwork: n, error: null }));
+    setState((s) => {
+      const networkNums = s.numbers.filter((num) => num.network === n);
+      const hasActive = networkNums.some((num) => num.isActive);
+      const numbers = hasActive
+        ? s.numbers
+        : s.numbers.map((num) =>
+            num.network === n && num.id === networkNums[0]?.id
+              ? { ...num, isActive: true }
+              : num,
+          );
+      return { ...s, activeNetwork: n, numbers, error: null };
+    });
 
   const getActiveNumber = useCallback(
     () => state.numbers.find((n) => n.isActive && n.network === state.activeNetwork),
