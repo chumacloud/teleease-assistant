@@ -115,7 +115,12 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: t.bgLight }}>
+    <div className="relative min-h-screen overflow-hidden" style={{ backgroundColor: t.bgLight }}>
+      {/* Decorative background */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <div className="absolute -top-20 -right-20 h-60 w-60 rounded-full opacity-30 blur-3xl" style={{ background: `radial-gradient(circle, ${t.bg} 0%, transparent 70%)` }} />
+        <div className="absolute bottom-20 -left-20 h-48 w-48 rounded-full opacity-20 blur-3xl" style={{ background: `radial-gradient(circle, ${t.bg} 0%, transparent 70%)` }} />
+      </div>
       {/* Header */}
       <div
         className={`sticky top-0 z-20 bg-gradient-to-br ${t.gradient}`}
