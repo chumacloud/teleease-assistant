@@ -4,7 +4,7 @@ import { useTelecom } from '@/context/TelecomContext';
 import {
   ArrowLeft, RefreshCw, Wifi, Phone, Calendar, Clock, AlertTriangle,
   Plus, CheckCircle2, ShoppingCart, X, Loader2, Bell, ChevronDown,
-  TrendingUp, Zap, Shield,
+  TrendingUp, Zap, Shield, Send, Share2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
