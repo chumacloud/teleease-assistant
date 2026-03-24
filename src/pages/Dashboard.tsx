@@ -20,6 +20,7 @@ const theme = {
     cardGlow: '0 8px 32px hsl(45 100% 50% / 0.12)',
     subtleBg: 'hsl(45,100%,50%,0.08)',
     subtleBorder: 'hsl(45,100%,50%,0.15)',
+    name: 'MTN',
   },
   airtel: {
     gradient: 'from-[hsl(0,80%,55%)] to-[hsl(350,75%,40%)]',
@@ -30,6 +31,18 @@ const theme = {
     cardGlow: '0 8px 32px hsl(0 80% 52% / 0.12)',
     subtleBg: 'hsl(0,80%,52%,0.06)',
     subtleBorder: 'hsl(0,80%,52%,0.12)',
+    name: 'Airtel',
+  },
+  glo: {
+    gradient: 'from-[hsl(130,70%,45%)] to-[hsl(145,65%,32%)]',
+    bg: 'hsl(130,70%,42%)',
+    bgLight: 'hsl(130,40%,97%)',
+    text: 'hsl(0,0%,100%)',
+    accent: 'hsl(130,60%,32%)',
+    cardGlow: '0 8px 32px hsl(130 70% 42% / 0.12)',
+    subtleBg: 'hsl(130,70%,42%,0.07)',
+    subtleBorder: 'hsl(130,70%,42%,0.14)',
+    name: 'Glo',
   },
 };
 
@@ -102,7 +115,12 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: t.bgLight }}>
+    <div className="relative min-h-screen overflow-hidden" style={{ backgroundColor: t.bgLight }}>
+      {/* Decorative background */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        <div className="absolute -top-20 -right-20 h-60 w-60 rounded-full opacity-30 blur-3xl" style={{ background: `radial-gradient(circle, ${t.bg} 0%, transparent 70%)` }} />
+        <div className="absolute bottom-20 -left-20 h-48 w-48 rounded-full opacity-20 blur-3xl" style={{ background: `radial-gradient(circle, ${t.bg} 0%, transparent 70%)` }} />
+      </div>
       {/* Header */}
       <div
         className={`sticky top-0 z-20 bg-gradient-to-br ${t.gradient}`}
@@ -113,7 +131,7 @@ const Dashboard = () => {
             <button onClick={() => navigate('/home')} className="flex items-center gap-1.5 text-sm font-semibold active:scale-95 transition-transform">
               <ArrowLeft className="h-5 w-5" /> Back
             </button>
-            <span className="text-lg font-bold tracking-tight">{net === 'mtn' ? 'MTN' : 'Airtel'}</span>
+            <span className="text-lg font-bold tracking-tight">{t.name}</span>
             <button className="relative active:scale-95 transition-transform" onClick={() => {}}>
               <Bell className="h-5 w-5" />
               {activeNotifs.length > 0 && (

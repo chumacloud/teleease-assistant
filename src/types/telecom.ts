@@ -1,4 +1,4 @@
-export type NetworkType = 'mtn' | 'airtel';
+export type NetworkType = 'mtn' | 'airtel' | 'glo';
 
 export interface PhoneNumber {
   id: string;

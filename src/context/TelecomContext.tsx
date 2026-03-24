@@ -25,6 +25,7 @@ interface TelecomContextType extends TelecomState {
 const defaultNumbers: PhoneNumber[] = [
   { id: '1', number: '0803 456 7890', network: 'mtn', isActive: true },
   { id: '2', number: '0701 234 5678', network: 'airtel', isActive: false },
+  { id: '3', number: '0805 678 1234', network: 'glo', isActive: false },
 ];
 
 function makeSub(overrides?: Partial<SubscriptionData>): SubscriptionData {
@@ -43,6 +44,7 @@ function makeSub(overrides?: Partial<SubscriptionData>): SubscriptionData {
 const defaultSubs: Record<string, SubscriptionData> = {
   '1': makeSub(),
   '2': makeSub({ airtimeBalance: 150, dataBalanceMB: 380, activePlan: '1GB Daily Plan' }),
+  '3': makeSub({ airtimeBalance: 820, dataBalanceMB: 1800, activePlan: '3GB Weekly Plan' }),
 };
 
 const TelecomContext = createContext<TelecomContextType | null>(null);
