@@ -69,7 +69,6 @@ const Dashboard = () => {
   const [shareAmount, setShareAmount] = useState('');
 
   const [buyModal, setBuyModal] = useState<'airtime' | 'data' | null>(null);
-  const [addNumModal, setAddNumModal] = useState(false);
   const [newNum, setNewNum] = useState('');
   const [otpStep, setOtpStep] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
