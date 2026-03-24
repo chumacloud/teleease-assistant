@@ -223,7 +223,7 @@ export function TelecomProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <TelecomContext.Provider
-      value={{ ...state, setActiveNetwork, getActiveNumber, switchNumber, addNumber, refresh, buyAirtime, buyData, dismissNotification, getSubscription }}
+      value={{ ...state, setActiveNetwork, getActiveNumber, switchNumber, addNumber, refresh, buyAirtime, buyData, shareAirtime, shareData, dismissNotification, getSubscription }}
     >
       {children}
     </TelecomContext.Provider>
