@@ -398,6 +398,45 @@ const Dashboard = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Share Modal */}
+      <Dialog open={shareModal !== null} onOpenChange={() => { setShareModal(null); setShareRecipient(''); setShareAmount(''); }}>
+        <DialogContent className="max-w-xs rounded-3xl border-border">
+          <DialogHeader>
+            <DialogTitle className="text-lg">Share {shareModal === 'airtime' ? 'Airtime' : 'Data'}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            <Input
+              placeholder="Recipient number e.g. 0803 456 7890"
+              value={shareRecipient}
+              onChange={(e) => setShareRecipient(e.target.value)}
+              className="rounded-xl"
+            />
+            <Input
+              placeholder={shareModal === 'airtime' ? 'Amount in ₦' : 'Amount in MB'}
+              value={shareAmount}
+              onChange={(e) => setShareAmount(e.target.value.replace(/[^0-9]/g, ''))}
+              type="text"
+              inputMode="numeric"
+              className="rounded-xl"
+            />
+            {shareAmount && (
+              <p className="text-xs text-muted-foreground">
+                You will share {shareModal === 'airtime' ? `₦${Number(shareAmount).toLocaleString()}` : `${shareAmount}MB`} to {shareRecipient || '...'}
+              </p>
+            )}
+            <Button
+              className={`w-full rounded-xl active:scale-[0.97] bg-gradient-to-r ${t.gradient}`}
+              style={{ color: t.text }}
+              disabled={isLoading || !shareRecipient.trim() || !shareAmount.trim()}
+              onClick={() => shareModal && handleShare(shareModal)}
+            >
+              {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+              {isLoading ? 'Sharing…' : `Share ${shareModal === 'airtime' ? 'Airtime' : 'Data'}`}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
