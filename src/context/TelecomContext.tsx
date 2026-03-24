@@ -25,6 +25,7 @@ interface TelecomContextType extends TelecomState {
 const defaultNumbers: PhoneNumber[] = [
   { id: '1', number: '0803 456 7890', network: 'mtn', isActive: true },
   { id: '2', number: '0701 234 5678', network: 'airtel', isActive: false },
+  { id: '3', number: '0805 678 1234', network: 'glo', isActive: false },
 ];
 
 function makeSub(overrides?: Partial<SubscriptionData>): SubscriptionData {
