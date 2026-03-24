@@ -44,6 +44,7 @@ function makeSub(overrides?: Partial<SubscriptionData>): SubscriptionData {
 const defaultSubs: Record<string, SubscriptionData> = {
   '1': makeSub(),
   '2': makeSub({ airtimeBalance: 150, dataBalanceMB: 380, activePlan: '1GB Daily Plan' }),
+  '3': makeSub({ airtimeBalance: 820, dataBalanceMB: 1800, activePlan: '3GB Weekly Plan' }),
 };
 
 const TelecomContext = createContext<TelecomContextType | null>(null);

@@ -126,7 +126,7 @@ const Dashboard = () => {
             <button onClick={() => navigate('/home')} className="flex items-center gap-1.5 text-sm font-semibold active:scale-95 transition-transform">
               <ArrowLeft className="h-5 w-5" /> Back
             </button>
-            <span className="text-lg font-bold tracking-tight">{net === 'mtn' ? 'MTN' : 'Airtel'}</span>
+            <span className="text-lg font-bold tracking-tight">{t.name}</span>
             <button className="relative active:scale-95 transition-transform" onClick={() => {}}>
               <Bell className="h-5 w-5" />
               {activeNotifs.length > 0 && (
