@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useTelecom } from '@/context/TelecomContext';
-import { Signal, Radio, Smartphone, ChevronRight } from 'lucide-react';
+import { Signal, Radio, Smartphone, ChevronRight, Globe } from 'lucide-react';
+import type { NetworkType } from '@/types/telecom';
 
 const networks = [
   {
@@ -25,35 +26,64 @@ const networks = [
     icon: Radio,
     decoration: 'hsl(0,0%,100%,0.06)',
   },
+  {
+    id: 'glo' as const,
+    name: 'Glo',
+    tagline: 'Rule your world',
+    gradient: 'from-[hsl(130,70%,45%)] to-[hsl(145,65%,32%)]',
+    text: 'hsl(0,0%,100%)',
+    iconBg: 'hsl(0,0%,100%,0.18)',
+    shadow: '0 12px 40px hsl(130 70% 42% / 0.25), 0 4px 12px hsl(130 70% 42% / 0.15)',
+    icon: Globe,
+    decoration: 'hsl(0,0%,100%,0.06)',
+  },
 ];
 
 const HomeScreen = () => {
   const navigate = useNavigate();
   const { setActiveNetwork } = useTelecom();
 
-  const handleSelect = (id: 'mtn' | 'airtel') => {
+  const handleSelect = (id: NetworkType) => {
     setActiveNetwork(id);
     navigate('/dashboard');
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-6">
-      <div className="w-full max-w-sm">
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6"
+      style={{ background: 'linear-gradient(145deg, hsl(220,25%,8%) 0%, hsl(230,30%,14%) 50%, hsl(220,20%,10%) 100%)' }}
+    >
+      {/* Decorative background orbs */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-32 -left-32 h-72 w-72 rounded-full opacity-20 blur-3xl"
+          style={{ background: 'radial-gradient(circle, hsl(45,100%,50%) 0%, transparent 70%)' }} />
+        <div className="absolute -bottom-40 -right-20 h-80 w-80 rounded-full opacity-15 blur-3xl"
+          style={{ background: 'radial-gradient(circle, hsl(0,80%,52%) 0%, transparent 70%)' }} />
+        <div className="absolute top-1/3 right-0 h-60 w-60 rounded-full opacity-10 blur-3xl"
+          style={{ background: 'radial-gradient(circle, hsl(130,70%,45%) 0%, transparent 70%)' }} />
+        {/* Subtle grid overlay */}
+        <div className="absolute inset-0 opacity-[0.03]"
+          style={{ backgroundImage: 'linear-gradient(hsl(0,0%,100%) 1px, transparent 1px), linear-gradient(90deg, hsl(0,0%,100%) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+      </div>
+
+      <div className="relative z-10 w-full max-w-sm">
         {/* Header */}
-        <div className="mb-12 text-center animate-fade-in">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[hsl(220,25%,12%)]">
-            <Smartphone className="h-7 w-7 text-[hsl(45,100%,50%)]" strokeWidth={2} />
+        <div className="mb-10 text-center animate-fade-in">
+          <div className="mx-auto mb-5 relative">
+            <div className="absolute inset-0 mx-auto h-16 w-16 rounded-2xl bg-[hsl(45,100%,50%)] blur-xl opacity-30 animate-pulse" />
+            <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[hsl(45,100%,55%)] to-[hsl(45,100%,40%)] shadow-lg shadow-[hsl(45,100%,50%,0.25)]">
+              <Smartphone className="h-8 w-8 text-[hsl(220,25%,8%)]" strokeWidth={2} />
+            </div>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground text-balance" style={{ lineHeight: 1.1 }}>
+          <h1 className="text-3xl font-bold tracking-tight text-white text-balance" style={{ lineHeight: 1.1 }}>
             TeleEase
           </h1>
-          <p className="mt-2 text-sm font-medium text-muted-foreground">
+          <p className="mt-2 text-sm font-medium text-[hsl(220,15%,55%)]">
             Your Smart Telecom Assistant
           </p>
         </div>
 
         {/* Network Cards */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3.5">
           {networks.map((net, i) => {
             const Icon = net.icon;
             return (
@@ -97,7 +127,7 @@ const HomeScreen = () => {
         </div>
 
         {/* Footer */}
-        <p className="mt-10 text-center text-xs text-muted-foreground animate-fade-in" style={{ animationDelay: '400ms', animationFillMode: 'backwards' }}>
+        <p className="mt-8 text-center text-xs text-[hsl(220,15%,40%)] animate-fade-in" style={{ animationDelay: '500ms', animationFillMode: 'backwards' }}>
           Select your network to get started
         </p>
       </div>
