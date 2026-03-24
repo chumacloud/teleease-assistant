@@ -20,6 +20,7 @@ const theme = {
     cardGlow: '0 8px 32px hsl(45 100% 50% / 0.12)',
     subtleBg: 'hsl(45,100%,50%,0.08)',
     subtleBorder: 'hsl(45,100%,50%,0.15)',
+    name: 'MTN',
   },
   airtel: {
     gradient: 'from-[hsl(0,80%,55%)] to-[hsl(350,75%,40%)]',
@@ -30,6 +31,18 @@ const theme = {
     cardGlow: '0 8px 32px hsl(0 80% 52% / 0.12)',
     subtleBg: 'hsl(0,80%,52%,0.06)',
     subtleBorder: 'hsl(0,80%,52%,0.12)',
+    name: 'Airtel',
+  },
+  glo: {
+    gradient: 'from-[hsl(130,70%,45%)] to-[hsl(145,65%,32%)]',
+    bg: 'hsl(130,70%,42%)',
+    bgLight: 'hsl(130,40%,97%)',
+    text: 'hsl(0,0%,100%)',
+    accent: 'hsl(130,60%,32%)',
+    cardGlow: '0 8px 32px hsl(130 70% 42% / 0.12)',
+    subtleBg: 'hsl(130,70%,42%,0.07)',
+    subtleBorder: 'hsl(130,70%,42%,0.14)',
+    name: 'Glo',
   },
 };
 
