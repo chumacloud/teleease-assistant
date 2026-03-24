@@ -119,6 +119,22 @@ const Dashboard = () => {
     flash(`${plan.label} purchased!`);
   };
 
+  const handleShare = async (type: 'airtime' | 'data') => {
+    if (!shareRecipient.trim() || !shareAmount.trim()) return;
+    const amt = Number(shareAmount);
+    if (isNaN(amt) || amt <= 0) return;
+    if (type === 'airtime') {
+      await shareAirtime(shareRecipient, amt);
+      flash(`₦${amt} airtime shared to ${shareRecipient}!`);
+    } else {
+      await shareData(shareRecipient, amt);
+      flash(`${amt}MB data shared to ${shareRecipient}!`);
+    }
+    setShareModal(null);
+    setShareRecipient('');
+    setShareAmount('');
+  };
+
   return (
     <div className="relative min-h-screen overflow-hidden" style={{ backgroundColor: t.bgLight }}>
       {/* Decorative background */}
