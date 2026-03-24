@@ -18,6 +18,8 @@ interface TelecomContextType extends TelecomState {
   refresh: () => Promise<void>;
   buyAirtime: (amount: number) => Promise<void>;
   buyData: (amountMB: number, plan: string) => Promise<void>;
+  shareAirtime: (recipientNumber: string, amount: number) => Promise<void>;
+  shareData: (recipientNumber: string, amountMB: number) => Promise<void>;
   dismissNotification: (id: string) => void;
   getSubscription: () => SubscriptionData | undefined;
 }
@@ -89,10 +91,17 @@ export function TelecomProvider({ children }: { children: React.ReactNode }) {
   const addNumber = (number: string, network: NetworkType) => {
     const id = Date.now().toString();
     const newNum: PhoneNumber = { id, number, network, isActive: false };
+    const randomAirtime = Math.round((Math.random() * 2000 + 100) * 100) / 100;
+    const randomData = Math.round(Math.random() * 3000 + 200);
+    const plans = ['500MB Daily', '1GB Weekly', '2GB Weekly', '5GB Monthly'];
+    const randomPlan = plans[Math.floor(Math.random() * plans.length)];
     setState((s) => ({
       ...s,
       numbers: [...s.numbers, newNum],
-      subscriptions: { ...s.subscriptions, [id]: makeSub() },
+      subscriptions: {
+        ...s.subscriptions,
+        [id]: makeSub({ airtimeBalance: randomAirtime, dataBalanceMB: randomData, activePlan: randomPlan }),
+      },
     }));
   };
 
@@ -169,6 +178,38 @@ export function TelecomProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const shareAirtime = async (recipientNumber: string, amount: number) => {
+    setState((s) => ({ ...s, isLoading: true }));
+    await new Promise((r) => setTimeout(r, 1500));
+    setState((s) => {
+      const active = s.numbers.find((n) => n.isActive && n.network === s.activeNetwork);
+      if (!active) return { ...s, isLoading: false };
+      const old = s.subscriptions[active.id];
+      if (old.airtimeBalance < amount) return { ...s, isLoading: false, error: 'Insufficient airtime balance' };
+      return {
+        ...s,
+        isLoading: false,
+        subscriptions: { ...s.subscriptions, [active.id]: { ...old, airtimeBalance: old.airtimeBalance - amount, lastUpdated: new Date() } },
+      };
+    });
+  };
+
+  const shareData = async (recipientNumber: string, amountMB: number) => {
+    setState((s) => ({ ...s, isLoading: true }));
+    await new Promise((r) => setTimeout(r, 1500));
+    setState((s) => {
+      const active = s.numbers.find((n) => n.isActive && n.network === s.activeNetwork);
+      if (!active) return { ...s, isLoading: false };
+      const old = s.subscriptions[active.id];
+      if (old.dataBalanceMB < amountMB) return { ...s, isLoading: false, error: 'Insufficient data balance' };
+      return {
+        ...s,
+        isLoading: false,
+        subscriptions: { ...s.subscriptions, [active.id]: { ...old, dataBalanceMB: old.dataBalanceMB - amountMB, lastUpdated: new Date() } },
+      };
+    });
+  };
+
   const dismissNotification = (id: string) =>
     setState((s) => ({
       ...s,
@@ -182,7 +223,7 @@ export function TelecomProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <TelecomContext.Provider
-      value={{ ...state, setActiveNetwork, getActiveNumber, switchNumber, addNumber, refresh, buyAirtime, buyData, dismissNotification, getSubscription }}
+      value={{ ...state, setActiveNetwork, getActiveNumber, switchNumber, addNumber, refresh, buyAirtime, buyData, shareAirtime, shareData, dismissNotification, getSubscription }}
     >
       {children}
     </TelecomContext.Provider>

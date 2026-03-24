@@ -4,7 +4,7 @@ import { useTelecom } from '@/context/TelecomContext';
 import {
   ArrowLeft, RefreshCw, Wifi, Phone, Calendar, Clock, AlertTriangle,
   Plus, CheckCircle2, ShoppingCart, X, Loader2, Bell, ChevronDown,
-  TrendingUp, Zap, Shield,
+  TrendingUp, Zap, Shield, Send, Share2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -59,10 +59,15 @@ const Dashboard = () => {
   const {
     activeNetwork, numbers, isLoading, error,
     getActiveNumber, getSubscription, switchNumber, addNumber,
-    refresh, buyAirtime, buyData, notifications, dismissNotification,
+    refresh, buyAirtime, buyData, shareAirtime, shareData,
+    notifications, dismissNotification,
   } = useTelecom();
 
   const [buyModal, setBuyModal] = useState<'airtime' | 'data' | null>(null);
+  const [shareModal, setShareModal] = useState<'airtime' | 'data' | null>(null);
+  const [shareRecipient, setShareRecipient] = useState('');
+  const [shareAmount, setShareAmount] = useState('');
+
   const [addNumModal, setAddNumModal] = useState(false);
   const [newNum, setNewNum] = useState('');
   const [otpStep, setOtpStep] = useState(false);
@@ -112,6 +117,22 @@ const Dashboard = () => {
     await buyData(plan.mb, plan.label);
     setBuyModal(null);
     flash(`${plan.label} purchased!`);
+  };
+
+  const handleShare = async (type: 'airtime' | 'data') => {
+    if (!shareRecipient.trim() || !shareAmount.trim()) return;
+    const amt = Number(shareAmount);
+    if (isNaN(amt) || amt <= 0) return;
+    if (type === 'airtime') {
+      await shareAirtime(shareRecipient, amt);
+      flash(`₦${amt} airtime shared to ${shareRecipient}!`);
+    } else {
+      await shareData(shareRecipient, amt);
+      flash(`${amt}MB data shared to ${shareRecipient}!`);
+    }
+    setShareModal(null);
+    setShareRecipient('');
+    setShareAmount('');
   };
 
   return (
@@ -264,6 +285,24 @@ const Dashboard = () => {
             </div>
             <span className="text-sm font-semibold text-foreground">Buy Data</span>
           </button>
+          <button
+            onClick={() => setShareModal('airtime')}
+            className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:shadow-md active:scale-[0.97]"
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ backgroundColor: t.subtleBg }}>
+              <Send className="h-5 w-5" style={{ color: t.accent }} />
+            </div>
+            <span className="text-sm font-semibold text-foreground">Share Airtime</span>
+          </button>
+          <button
+            onClick={() => setShareModal('data')}
+            className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:shadow-md active:scale-[0.97]"
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ backgroundColor: t.subtleBg }}>
+              <Share2 className="h-5 w-5" style={{ color: t.accent }} />
+            </div>
+            <span className="text-sm font-semibold text-foreground">Share Data</span>
+          </button>
         </div>
 
         {/* Refresh */}
@@ -357,6 +396,45 @@ const Dashboard = () => {
               </Button>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Share Modal */}
+      <Dialog open={shareModal !== null} onOpenChange={() => { setShareModal(null); setShareRecipient(''); setShareAmount(''); }}>
+        <DialogContent className="max-w-xs rounded-3xl border-border">
+          <DialogHeader>
+            <DialogTitle className="text-lg">Share {shareModal === 'airtime' ? 'Airtime' : 'Data'}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            <Input
+              placeholder="Recipient number e.g. 0803 456 7890"
+              value={shareRecipient}
+              onChange={(e) => setShareRecipient(e.target.value)}
+              className="rounded-xl"
+            />
+            <Input
+              placeholder={shareModal === 'airtime' ? 'Amount in ₦' : 'Amount in MB'}
+              value={shareAmount}
+              onChange={(e) => setShareAmount(e.target.value.replace(/[^0-9]/g, ''))}
+              type="text"
+              inputMode="numeric"
+              className="rounded-xl"
+            />
+            {shareAmount && (
+              <p className="text-xs text-muted-foreground">
+                You will share {shareModal === 'airtime' ? `₦${Number(shareAmount).toLocaleString()}` : `${shareAmount}MB`} to {shareRecipient || '...'}
+              </p>
+            )}
+            <Button
+              className={`w-full rounded-xl active:scale-[0.97] bg-gradient-to-r ${t.gradient}`}
+              style={{ color: t.text }}
+              disabled={isLoading || !shareRecipient.trim() || !shareAmount.trim()}
+              onClick={() => shareModal && handleShare(shareModal)}
+            >
+              {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+              {isLoading ? 'Sharing…' : `Share ${shareModal === 'airtime' ? 'Airtime' : 'Data'}`}
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
