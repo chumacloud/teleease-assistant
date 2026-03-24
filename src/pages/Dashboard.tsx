@@ -285,6 +285,24 @@ const Dashboard = () => {
             </div>
             <span className="text-sm font-semibold text-foreground">Buy Data</span>
           </button>
+          <button
+            onClick={() => setShareModal('airtime')}
+            className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:shadow-md active:scale-[0.97]"
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ backgroundColor: t.subtleBg }}>
+              <Send className="h-5 w-5" style={{ color: t.accent }} />
+            </div>
+            <span className="text-sm font-semibold text-foreground">Share Airtime</span>
+          </button>
+          <button
+            onClick={() => setShareModal('data')}
+            className="flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-4 shadow-sm transition-all duration-200 hover:shadow-md active:scale-[0.97]"
+          >
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ backgroundColor: t.subtleBg }}>
+              <Share2 className="h-5 w-5" style={{ color: t.accent }} />
+            </div>
+            <span className="text-sm font-semibold text-foreground">Share Data</span>
+          </button>
         </div>
 
         {/* Refresh */}
