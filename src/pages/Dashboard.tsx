@@ -59,8 +59,14 @@ const Dashboard = () => {
   const {
     activeNetwork, numbers, isLoading, error,
     getActiveNumber, getSubscription, switchNumber, addNumber,
-    refresh, buyAirtime, buyData, notifications, dismissNotification,
+    refresh, buyAirtime, buyData, shareAirtime, shareData,
+    notifications, dismissNotification,
   } = useTelecom();
+
+  const [buyModal, setBuyModal] = useState<'airtime' | 'data' | null>(null);
+  const [shareModal, setShareModal] = useState<'airtime' | 'data' | null>(null);
+  const [shareRecipient, setShareRecipient] = useState('');
+  const [shareAmount, setShareAmount] = useState('');
 
   const [buyModal, setBuyModal] = useState<'airtime' | 'data' | null>(null);
   const [addNumModal, setAddNumModal] = useState(false);
