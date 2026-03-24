@@ -18,6 +18,8 @@ interface TelecomContextType extends TelecomState {
   refresh: () => Promise<void>;
   buyAirtime: (amount: number) => Promise<void>;
   buyData: (amountMB: number, plan: string) => Promise<void>;
+  shareAirtime: (recipientNumber: string, amount: number) => Promise<void>;
+  shareData: (recipientNumber: string, amountMB: number) => Promise<void>;
   dismissNotification: (id: string) => void;
   getSubscription: () => SubscriptionData | undefined;
 }
