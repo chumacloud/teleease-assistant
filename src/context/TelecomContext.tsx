@@ -91,10 +91,17 @@ export function TelecomProvider({ children }: { children: React.ReactNode }) {
   const addNumber = (number: string, network: NetworkType) => {
     const id = Date.now().toString();
     const newNum: PhoneNumber = { id, number, network, isActive: false };
+    const randomAirtime = Math.round((Math.random() * 2000 + 100) * 100) / 100;
+    const randomData = Math.round(Math.random() * 3000 + 200);
+    const plans = ['500MB Daily', '1GB Weekly', '2GB Weekly', '5GB Monthly'];
+    const randomPlan = plans[Math.floor(Math.random() * plans.length)];
     setState((s) => ({
       ...s,
       numbers: [...s.numbers, newNum],
-      subscriptions: { ...s.subscriptions, [id]: makeSub() },
+      subscriptions: {
+        ...s.subscriptions,
+        [id]: makeSub({ airtimeBalance: randomAirtime, dataBalanceMB: randomData, activePlan: randomPlan }),
+      },
     }));
   };
 
